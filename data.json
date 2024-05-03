@@ -1,0 +1,66 @@
+[
+  {
+    "model": "catalog.category",
+    "pk": 1,
+    "fields": {
+      "category_name": "Напитки",
+      "description": "Безалкогольные напитки, кофе, чай, пиво и эль"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 2,
+    "fields": {
+      "category_name": "Приправы",
+      "description": "Сладкие и соленые соусы, приправы, пасты и приправы"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 3,
+    "fields": {
+      "category_name": "Кондитерские изделия",
+      "description": "Десерты, конфеты и сладкий хлеб"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 4,
+    "fields": {
+      "category_name": "Молочные продукты",
+      "description": "Сыры"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 5,
+    "fields": {
+      "category_name": "Зерно/Крупы",
+      "description": "Хлеб, крекеры, макароны и хлопья"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 6,
+    "fields": {
+      "category_name": "Мясо/Птица",
+      "description": "Готовое мясо"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 7,
+    "fields": {
+      "category_name": "Продукция",
+      "description": "Сухофрукты и творог из фасоли"
+    }
+  },
+  {
+    "model": "catalog.category",
+    "pk": 8,
+    "fields": {
+      "category_name": "Морепродукты",
+      "description": "Водоросли и рыба"
+    }
+  }
+]
