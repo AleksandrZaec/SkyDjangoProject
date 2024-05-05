@@ -1,6 +1,6 @@
 from django import forms
-from django.forms import CheckboxInput, ValidationError
-
+from django.core.exceptions import ValidationError
+from django.forms.widgets import CheckboxInput
 from product.models import Version, Product
 
 FORBIDDEN_WORDS = [
@@ -15,23 +15,10 @@ FORBIDDEN_WORDS = [
     "радар",
 ]
 
-
 def validate_no_forbidden_words(value):
     for word in FORBIDDEN_WORDS:
         if word.lower() in value.lower():
             raise ValidationError(f"Слово '{word}' не допускается.")
-
-
-class ContactForm(forms.Form):
-    first_name = forms.CharField(label="Имя", max_length=20)
-    email = forms.EmailField(label="Email")
-    question = forms.CharField(
-        label="Введите Ваш вопрос",
-        max_length=200,
-        help_text="не более 200 символов",
-        widget=forms.Textarea(attrs={"style": "height: 65px;"}),
-    )
-
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -47,16 +34,19 @@ class ProductForm(forms.ModelForm):
             "category": "Категория",
         }
 
-        title = forms.CharField(
-            label="Название", max_length=50, validators=[validate_no_forbidden_words]
-        )
-        description = forms.CharField(
-            label="Описание",
-            max_length=600,
-            help_text="не более 600 символов",
-            validators=[validate_no_forbidden_words],
-        )
+    title = forms.CharField(
+        label="Название", max_length=50, validators=[validate_no_forbidden_words]
+    )
+    description = forms.CharField(
+        label="Описание",
+        max_length=600,
+        help_text="не более 600 символов",
+        validators=[validate_no_forbidden_words],
+    )
 
+    def clean(self):
+        cleaned_data = super().clean()
+        return cleaned_data
 
 class VersionForm(forms.ModelForm):
     class Meta:
@@ -68,10 +58,8 @@ class VersionForm(forms.ModelForm):
         counter = 0
 
         try:
-
             existing_instance = self.instance.product.versions.filter(active=True)
             for active_version in existing_instance:
-                print(active_version)
                 if active_version:
                     if self.instance.pk is not None:
                         self.instance.active = cleaned_data.get('active', False)
@@ -79,7 +67,6 @@ class VersionForm(forms.ModelForm):
 
             if counter > 1:
                 raise forms.ValidationError('Активная версия должна быть только одна')
-
 
         except Version.DoesNotExist:
             pass
