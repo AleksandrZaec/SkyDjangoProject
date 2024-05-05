@@ -38,8 +38,18 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'catalog',
+    'product',
+    'materials',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'users',
+
 ]
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -124,9 +134,35 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-STATICFILES_DIRS = (BASE_DIR / 'static',)
+STATICFILES_DIRS = [
+    BASE_DIR / 'static'
+]
+
+
+
+MEDIA_URL = '/media/'
+
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'users.User'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+#
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.mail.ru'  # SMTP-хост для Mail.ru
+# EMAIL_PORT = 465  # Порт для SMTP-сервера Mail.ru
+# EMAIL_USE_SSL = True
+# EMAIL_HOST_USER = # ''  # Ваш почтовый адрес на Mail.ru
+# EMAIL_HOST_PASSWORD = # os.getenv('SEND_MAIL_PASSWORD')  # Пароль от вашего почтового ящика
+#
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+# SERVER_EMAIL = EMAIL_HOST_USER
+# EMAIL_ADMIN = EMAIL_HOST_USER
