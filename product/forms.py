@@ -48,6 +48,16 @@ class ProductForm(forms.ModelForm):
         cleaned_data = super().clean()
         return cleaned_data
 
+class ContactForm(forms.Form):
+    first_name = forms.CharField(label="Имя", max_length=20)
+    email = forms.EmailField(label="Email")
+    question = forms.CharField(
+        label="Введите Ваш вопрос",
+        max_length=200,
+        help_text="не более 200 символов",
+        widget=forms.Textarea(attrs={"style": "height: 65px;"}),
+    )
+
 class VersionForm(forms.ModelForm):
     class Meta:
         model = Version

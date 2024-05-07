@@ -9,6 +9,4 @@ class MaterialAdmin(admin.ModelAdmin):
     list_display = ('title',)
 
 
-from django.contrib import admin
 
-# Register your models here.

@@ -1,6 +1,5 @@
 {% load static %}
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-bs-theme="auto">
 <head>
     <script src="{% static 'js/color-modes.js' %}"></script>
@@ -20,14 +19,14 @@
     <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"
           integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
 
-    {#    <!-- Favicons -->#}
-    {#    <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">#}
-    {#    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">#}
-    {#    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">#}
-    {#    <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">#}
-    {#    <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">#}
-    {#    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">#}
-    {#    <meta name="theme-color" content="#712cf9">#}
+<!--    {#    &lt;!&ndash; Favicons &ndash;&gt;#}-->
+<!--    <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">-->
+<!--    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">-->
+<!--    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">-->
+<!--    <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">-->
+<!--    <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">-->
+<!--    <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">-->
+<!--    <meta name="theme-color" content="#712cf9">-->
 
 
     <style>
@@ -112,11 +111,25 @@
             text-decoration: none;
         }
 
+
         hr {
             border: none;
             height: 4px; /* Высота линии */
             background-color: black; /* Цвет линии */
         }
+
+        .no-underline {
+            text-decoration: none;
+        }
+
+        .green-text {
+            color: green;
+        }
+
+        .red-text {
+            color: red;
+        }
+
 
     </style>
 
@@ -197,17 +210,39 @@
         <div class="container">
             <div class="row">
                 <div class="col-sm-8 col-md-7 py-4">
-                    <h4>Добро пожаловать в наш интернет-магазин!</h4>
-                    <p class="text-body-secondary">Мы рады приветствовать вас на нашей виртуальной витрине, где вы
-                        найдете широкий ассортимент качественных товаров по доступным ценам. Наша цель - сделать ваше
-                        онлайн-пребывание в нашем магазине приятным и удобным. Спасибо, что выбрали нас!</p>
+                    {% if user.is_authenticated %}
+                        <h4>Добро пожаловать в наш интернет-магазин!</h4>
+                        <p class="text-body-secondary">Мы рады приветствовать вас на нашей виртуальной витрине, где вы
+                            найдете широкий ассортимент качественных товаров по доступным ценам. Наша цель - сделать
+                            ваше
+                            онлайн-пребывание в нашем магазине приятным и удобным. Спасибо, что выбрали нас!</p>
+                    {% else %}
+                        <h4>Добро пожаловать в наш интернет-магазин!</h4>
+                        <p class="text-body-secondary">Войдите под своей учетной записью или зарегистрируйтесь для
+                            дальнейшей работы на нашем сайте</p>
+                    {% endif %}
+
                 </div>
                 <div class="col-sm-4 offset-md-1 py-4">
                     <h4>Меню</h4>
                     <ul class="list-unstyled">
-                        <li><a href="{% url 'product:index' %}" class="text-white">Главная</a></li>
-                        <li><a href="{% url 'materials:material_list' %}" class="text-white">Материалы</a></li>
-                        <li><a href="{% url 'product:contacts' %}" class="text-white">Контакты</a></li>
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'product:index' %}" class="text-white">Главная</a></li>
+                            <li><a href="{% url 'materials:material_list' %}" class="text-white">Материалы</a></li>
+                            <li><a href="{% url 'product:contacts' %}" class="text-white">Контакты</a></li>
+                            <br>
+
+                            <li><a href="{% url 'users:profile' %}" class="text-white">Профиль</a></li>
+                            <li><a href="{% url 'users:logout' %}" class="text-white">Выйти</a></li>
+                            {% if user.is_superuser %}
+                                <li><a href="http://127.0.0.1:8000/admin/" class="text-white">Админка</a></li>
+                            {% endif %}
+                        {% else %}
+                            <li><a href="{% url 'users:login' %}" class="text-white">Войти</a></li>
+                            <li><a href="{% url 'users:register' %}" class="text-white">Регистрация</a></li>
+                            <br>
+
+                        {% endif %}
                     </ul>
                 </div>
             </div>

@@ -7,7 +7,11 @@
                 <div class="col-8">
                     <div class="card">
                         <div class="card-header">
-                            <h5>Материал "{{ object.title }}" ({{ object.slug }})</h5>
+                            <h5>Тема "{{ object.title }}"
+                                {% if user.is_authenticated %}
+                                    ({{ object.slug }})
+                                    ({{ object.user }})</h5>
+                                {% endif %}
                         </div>
                         <div class="card-body">
                             <p> Описание: {{ object.body }}</p>
@@ -15,7 +19,18 @@
                         <div class="card-footer">
                             <p class="float-right">
                                 <a href="{% url 'materials:material_list' %}"
-                                   class="btn btn-outline-secondary">Вернуться</a>
+                                   class="btn btn-sm btn-outline-secondary">Вернуться</a>
+                                {% if user.is_authenticated %}
+
+                                    <a href="{% url 'materials:material_edit' object.pk %}" type="button"
+                                       class="btn btn-sm btn-outline-warning">Редактирование</a>
+
+                                    {% if user.is_superuser %}
+                                        <a href="{% url 'materials:material_delete' object.pk %}" type="button"
+                                           class="btn btn-sm btn-outline-danger">Удалить</a>
+                                    {% endif %}
+
+                                {% endif %}
                             </p>
                             <p class="float-right">
                                 Просмотры: {{ object.views_count }}

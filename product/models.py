@@ -1,17 +1,30 @@
+from django.conf import settings
 from django.db import models
 
-NULLABLE = {'null': True, 'blank': True}
+NULLABLE = {
+    'null': True,
+    'blank': True
+}
 
 
 class Product(models.Model):
     title = models.CharField(max_length=200, verbose_name="Название")
     description = models.TextField(verbose_name="Описание")
     image = models.ImageField(upload_to="images/", verbose_name="Изображение")
-    price = models.IntegerField(verbose_name="Стоимость", null=True)
+    price = models.IntegerField(verbose_name="Стоимость")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Дата создания")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Дата последнего изменения")
-    category = models.ForeignKey("Category", on_delete=models.CASCADE, verbose_name="Категория")
-    active = models.BooleanField(default=True, verbose_name="Наличие")
+    updated_at = models.DateTimeField(
+        auto_now=True, verbose_name="Дата последнего изменения"
+    )
+    category = models.ForeignKey(
+        "Category", on_delete=models.CASCADE, verbose_name="Категория"
+    )
+
+    active = models.BooleanField(default=False, verbose_name="Наличие")
+
+    is_staff = models.BooleanField(default=False, verbose_name="Модератор")
+
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='user', **NULLABLE)
 
     def __str__(self):
         return f"{self.title}"
