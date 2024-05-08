@@ -11,7 +11,7 @@ from product.models import *
 from users.models import User
 
 
-class ProductListView(LoginRequiredMixin, ListView):
+class ProductListView(ListView):
     model = Product
 
     def get_context_data(self, **kwargs):
@@ -46,7 +46,7 @@ def contacts(request):
     return render(request, 'product/contacts.html', {'form': form})
 
 
-class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):    # PermissionRequiredMixin
     model = Product
     form_class = ProductForm
     template_name = 'product/product_form.html'
@@ -65,6 +65,7 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
                     form.fields['active'].widget = forms.HiddenInput()
 
         return context_data
+
 
     def form_valid(self, form):
         form.instance.user = self.request.user

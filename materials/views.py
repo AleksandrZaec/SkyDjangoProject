@@ -21,7 +21,7 @@ class MaterialsDetailView(DetailView):
         return self.object
 
 
-class MaterialsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+class MaterialsCreateView(LoginRequiredMixin, CreateView):     # PermissionRequiredMixin
     model = Material
     fields = ('title', 'body', 'image')
     success_url = reverse_lazy('materials:material_list')
@@ -29,12 +29,9 @@ class MaterialsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        print(self.request.user)
-        self.object = form.save()
-        if form.is_valid():
-            new_material = form.save()
-            new_material.slug = slugify(new_material.title)
-            new_material.save()
+        new_material = form.save(commit=False)
+        new_material.slug = slugify(new_material.title)
+        new_material.save()
 
         return super().form_valid(form)
 

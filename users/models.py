@@ -14,8 +14,7 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='users/', verbose_name='аватар', **NULLABLE)
     country = models.CharField(max_length=50, verbose_name='страна', **NULLABLE)
     email_verified = models.BooleanField(default=False, verbose_name='Верификация почты')
-    tg_name = models.CharField(max_length=50, verbose_name='ник телеграм', **NULLABLE)
-
+    tg_nik = models.CharField(max_length=50, verbose_name='Ник телеграм', **NULLABLE)
     ver_code = models.CharField(max_length=15, default=code, verbose_name='проверочный код', **NULLABLE)
     is_active = models.BooleanField(default=False, verbose_name='Активность')
 

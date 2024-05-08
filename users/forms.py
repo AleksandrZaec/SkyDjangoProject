@@ -10,13 +10,13 @@ from users.models import User
 class RegistrationForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ('email', 'password1', 'password2')
+        fields = ('email', 'password1', 'password2',)
 
 
 class UserProfileForm(UserChangeForm):
     class Meta:
         model = get_user_model()
-        fields = ('first_name', 'last_name', 'phone', 'avatar', 'country', 'tg_name')
+        fields = ('first_name', 'last_name', 'phone', 'avatar', 'country', 'tg_nik')
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -28,7 +28,6 @@ class UserPasswordChangeForm(PasswordChangeForm):
     old_password = forms.CharField(label='Старый пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
     new_password1 = forms.CharField(label='Новый пароль', widget=forms.PasswordInput(attrs={'class': 'form-input'}))
     new_password2 = forms.CharField(label='Подтверждение пароля', widget=forms.PasswordInput(attrs={'class': 'form'}))
-
 
 
 

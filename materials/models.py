@@ -12,7 +12,6 @@ class Material(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата создания')
     is_publish = models.BooleanField(default=False, verbose_name='Публикация')
     views_count = models.IntegerField(default=0, verbose_name='Просмотры')
-
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, verbose_name='user', **NULLABLE)
 
     def __str__(self):
