@@ -167,7 +167,7 @@ DEFAULT_USER_IMAGE = MEDIA_URL + 'users/default.png'
 EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 2525
 EMAIL_HOST_USER = "zaecam95@mail.ru"
-EMAIL_HOST_PASSWORD = "sK52fSePwrYJJt4u9eXm"
+EMAIL_HOST_PASSWORD = "os.getenv('PASSWORD_EMAIL')"
 EMAIL_USE_TLS = True
 EMAIL_USE_SSL = False
 
