@@ -32,14 +32,10 @@
                 </div>
                 <div class="col-md-4">
                     {% if user.avatar %}
-                            <img src="{% media_path users.image %}" alt="No photo" class="mx-auto"/>
-{#                                 style="height: 200px; width: 150px;"/>#}
-                        {% else %}
-                            <p class="text-center py-5">
-                                Загрузите <br>
-                                фото <br>
-                            </p>
-                        {% endif %}
+                        <img src="{{ user.avatar.url }}" alt="User Avatar" class="mx-auto" style="max-width: 200px; max-height: 200px;"/>
+                    {% else %}
+                        <img src="{{ default_image }}" alt="No photo" class="mx-auto" style="max-width: 200px; max-height: 200px;"/>
+                    {% endif %}
                 </div>
             </div>
         </div>

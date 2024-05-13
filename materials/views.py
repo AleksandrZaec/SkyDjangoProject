@@ -21,7 +21,7 @@ class MaterialsDetailView(DetailView):
         return self.object
 
 
-class MaterialsCreateView(LoginRequiredMixin, CreateView):     # PermissionRequiredMixin
+class MaterialsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     model = Material
     fields = ('title', 'body', 'image')
     success_url = reverse_lazy('materials:material_list')
