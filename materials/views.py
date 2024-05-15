@@ -36,7 +36,7 @@ class MaterialsCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateVie
         return super().form_valid(form)
 
     def test_func(self):
-        return not self.request.user.is_staff
+        return self.request.user.is_superuser or self.request.user.groups.filter(name='moderator').exists() or self.request.user.has_perm('product.add_product')
 
 
 class MaterialsUpdateView(LoginRequiredMixin, UpdateView):

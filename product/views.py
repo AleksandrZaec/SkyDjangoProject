@@ -98,7 +98,7 @@ class ProductCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView)
 
     # Проверяем функцию test_func
     def test_func(self):
-        return not self.request.user.is_staff  # Возвращаем True, если пользователь не является персоналом
+        return self.request.user.is_superuser or self.request.user.groups.filter(name='moderator').exists() or self.request.user.has_perm('product.add_product')
 
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):  # Определяем UpdateView для обновления продуктов
