@@ -9,6 +9,7 @@ from django.views.generic import CreateView, UpdateView
 from django.contrib.auth.models import User
 from users.forms import RegistrationForm, UserProfileForm, UserPasswordChangeForm
 from users.models import User
+from .services import UserService
 
 
 class RegisterView(CreateView):
@@ -17,22 +18,20 @@ class RegisterView(CreateView):
     template_name = 'users/register.html'  # Используем шаблон register.html
     success_url = reverse_lazy('users:code')  # URL для успешной регистрации
 
-    def form_valid(self, form):
-        # Генерируем случайный код верификации
-        new_pass = ''.join([str(random.randint(0, 9)) for _ in range(9)])
-        new_user = form.save(commit=False)
-        new_user.ver_code = new_pass  # Присваиваем код верификации новому пользователю
-        new_user.save()
+    class RegisterView(CreateView):
+        model = User  # Используем модель User
+        form_class = RegistrationForm  # Используем форму RegistrationForm
+        template_name = 'users/register.html'  # Используем шаблон register.html
+        success_url = reverse_lazy('users:code')  # URL для успешной регистрации
 
-        # Отправляем письмо с кодом верификации
-        send_mail(
-            subject='Подтверждение почты',
-            message=f'Код {new_user.ver_code}',
-            from_email=settings.EMAIL_HOST_USER,
-            recipient_list=[new_user.email]
-        )
+        def form_valid(self, form):
+            new_user = form.save(commit=False)
+            new_user.ver_code = UserService.generate_verification_code()  # Генерация кода верификации
+            new_user.save()
 
-        return super().form_valid(form)  # Валидация формы
+            UserService.send_verification_email(new_user)  # Отправка письма с кодом верификации
+
+            return super().form_valid(form)  # Валидация формы
 
 
 class CodeView(View):

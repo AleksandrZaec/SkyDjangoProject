@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from product.services import get_cached_categories
 
 from product.forms import *
 from product.models import *
@@ -29,7 +32,7 @@ class ProductListView(LoginRequiredMixin, ListView):  # Определяем Lis
 
         return context
 
-
+@method_decorator(cache_page(60 * 15), name='dispatch')  # Кеширование на 15 минут
 class ProductDetailView(DetailView):  # Определяем DetailView для продуктов
     model = Product  # Указываем модель для DetailView
 
@@ -162,3 +165,25 @@ class ProductDeleteView(UserPassesTestMixin, DeleteView):  # Определяе�
     # Проверяем функцию test_func
     def test_func(self):
         return self.request.user.is_superuser  # Возвращаем True, если пользователь суперпользователь
+
+
+class CategoryCreateView(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
+    model = Category
+    form_class = CategoryForm
+    permission_required = 'product.add_category'
+    success_url = reverse_lazy('product:create')
+
+    def category_list_view(request):
+        context = {
+            'object_list': get_cached_categories(),
+            'title': 'Все категории'
+        }
+        return render(request, 'catalog/category_list.html', context)
+
+
+class CategoryListView(ListView):
+    template_name = 'product/category_list.html'
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        return get_cached_categories()
